@@ -1,0 +1,210 @@
+{% load static %}
+<!-- load static files like css and js -->
+
+<!DOCTYPE html>
+<!-- HTML5 document -->
+
+<html lang="en">
+
+<head>
+
+    <!-- character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- page title -->
+    <title>DevOps Dashboard</title>
+
+    <!-- icons library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- main css file -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar">
+
+        <div class="navbar-container">
+
+            <!-- logo -->
+            <div class="navbar-brand">
+                <span class="navbar-logo">AM</span>
+            </div>
+
+            <!-- navigation links -->
+            <ul class="navbar-menu">
+
+                <!-- go to portfolio -->
+                <li><a href="/" class="nav-link">Portfolio</a></li>
+
+                <!-- go to dashboard -->
+                <li><a href="/dashboard/" class="nav-link">Dashboard</a></li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main>
+
+        <section class="fade-in">
+
+            <div class="container">
+
+                <!-- page title -->
+                <div class="section-header">
+
+                    <h2>DevOps Dashboard</h2>
+
+                    <!-- description -->
+                    <p class="section-copy">
+                        Real-time system monitoring and Docker control panel
+                    </p>
+
+                </div>
+
+
+                <!-- ================= CPU & RAM ================= -->
+                <div class="projects-grid">
+
+                    <!-- CPU CARD -->
+                    <div class="project-card">
+                        <div class="project-body">
+
+                            <h3>CPU Usage</h3>
+
+                            <!-- show cpu value -->
+                            <p>{{ cpu }}%</p>
+
+                        </div>
+                    </div>
+
+                    <!-- RAM CARD -->
+                    <div class="project-card">
+                        <div class="project-body">
+
+                            <h3>RAM Usage</h3>
+
+                            <!-- show ram value -->
+                            <p>{{ ram }}%</p>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- ================= RUNNING CONTAINERS ================= -->
+                <div class="section-header">
+                    <h2>Docker Containers</h2>
+                </div>
+
+
+                <div class="projects-grid">
+
+                    <!-- loop containers -->
+                    {% for c in containers %}
+
+                    <div class="project-card">
+
+                        <div class="project-body">
+
+                            <!-- container name -->
+                            <h3>{{ c.name }}</h3>
+
+
+                            <!-- check status -->
+                            {% if c.status == "running" %}
+
+                                <!-- running status -->
+                                <p style="color: lightgreen;">Running</p>
+
+                            {% else %}
+
+                                <!-- stopped status -->
+                                <p style="color: red;">Stopped</p>
+
+                            {% endif %}
+
+
+                            <!-- ================= ACTION BUTTONS ================= -->
+
+                            <!-- restart container -->
+                            <a href="/dashboard/restart/{{ c.name }}/"
+                               style="display:inline-block; margin-top:8px; padding:4px 8px; background:#2563eb; color:white; border-radius:5px; text-decoration:none; font-size:12px;">
+                                Restart
+                            </a>
+
+
+                            <!-- start container -->
+                            <a href="/dashboard/start/{{ c.name }}/"
+                               style="display:inline-block; margin-top:8px; padding:4px 8px; background:green; color:white; border-radius:5px; text-decoration:none; font-size:12px; margin-left:5px;">
+                                Start
+                            </a>
+
+
+                            <!-- stop container -->
+                            <a href="/dashboard/stop/{{ c.name }}/"
+                               style="display:inline-block; margin-top:8px; padding:4px 8px; background:red; color:white; border-radius:5px; text-decoration:none; font-size:12px; margin-left:5px;">
+                                Stop
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+
+        <div class="container footer-bar">
+
+            <!-- footer text -->
+            <p>DevOps Dashboard © 2026</p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= SCRIPTS ================= -->
+
+    <!-- main js file -->
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <!-- dark mode script -->
+    <script src="{% static 'js/darkmode.js' %}"></script>
+
+
+    <!-- auto refresh page -->
+    <script>
+
+        // reload page every 5 seconds
+        setTimeout(function(){
+
+            location.reload();
+
+        }, 5000);
+
+    </script>
+
+</body>
+
+</html>

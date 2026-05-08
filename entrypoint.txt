@@ -1,0 +1,9 @@
+Start Container
+   ↓
+Wait DB
+   ↓
+Migrate
+   ↓
+Collect Static
+   ↓
+Run Server
