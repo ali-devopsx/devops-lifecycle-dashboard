@@ -2,10 +2,10 @@ name: DevOps CI Pipeline  # pipeline name
 
 on:
   push:
-    branches: ["main"]
+    branches: ["first"]
 
   pull_request:
-    branches: ["main"]
+    branches: ["first"]
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/django_app
