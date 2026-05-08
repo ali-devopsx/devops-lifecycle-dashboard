@@ -1,0 +1,50 @@
+name: DevOps Pipeline Production
+
+on:
+  push:
+    branches: ["first"]
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/django_app
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. get code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. run tests
+      - name: Run tests
+        run: |
+          pip install -r requirements.txt
+          python manage.py test
+
+      # 3. login to docker hub
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # 4. build image
+      - name: Build image
+        run: docker build -t $IMAGE_NAME:latest .
+
+      # 5. push image
+      - name: Push image
+        run: docker push $IMAGE_NAME:latest
+
+      # 6. deploy with docker-compose
+     # - name: Deploy to VPS (Docker Compose)
+       # uses: appleboy/ssh-action@v0.1.10
+       # with:
+         # host: ${{ secrets.VPS_HOST }}
+         # username: ${{ secrets.VPS_USER }}
+         # key: ${{ secrets.VPS_SSH_KEY }}
+
+
+       - name: run docker compose
+         run: |
+
+            docker compose down
+            docker compose up -d
