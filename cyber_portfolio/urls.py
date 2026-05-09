@@ -20,6 +20,7 @@ urlpatterns = [
     path('', include('identity.urls', namespace='identity')),
     
     path('dashboard/', include('dashboard.urls')),
+    path('', include('django_prometheus.urls')),
 ]
 
 # ===== STATIC AND MEDIA FILES SERVING =====

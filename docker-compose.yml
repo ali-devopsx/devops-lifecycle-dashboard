@@ -1,38 +1,59 @@
-version: "3.9"
-services:
-    nginx:
-      image: nginx:latest
-      container_name: nginx_server
-      ports:
-        - "80:80"
-        - "443:443"
-      volumes:
-        - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-        - .:/app
-        - ./ssl:/etc/nginx/ssl   # 🔥
-      depends_on:
-        - web
+version: "3.9" # Docker compose version
 
-    web:
-      build: .
-      container_name: django_app
-      command: gunicorn cyber_portfolio.wsgi:application --bind 0.0.0.0:8000
-      volumes:
-        - .:/app
-        - /var/run/docker.sock:/var/run/docker.sock # socket betwen django and docker
+services: # Start of our services
+    nginx: # Nginx service (Web Server)
+      image: nginx:latest # Use the latest Nginx image
+      container_name: nginx_server # Name of the container
       ports:
-        - "8000:8000"
-      depends_on:
-        - db
-    
-    db:
-      image: postgres
-      container_name: postgres_db
-      environment:
-         POSTGRES_DB: my_db
-         POSTGRES_USER: ali
-         POSTGRES_PASSWORD: root
+        - "80:80" # Map computer port 80 to container port 80
+        - "443:443" # Map computer port 443 to container port 443
       volumes:
-         - postgres_data:/var/lib/postgres_data
-volumes:
-    postgres_data:
+        - ./nginx/default.conf:/etc/nginx/conf.d/default.conf # Use my config file
+        - .:/app # Link my current folder to /app inside docker
+        - ./ssl:/etc/nginx/ssl # Link my SSL folder for HTTPS
+        - media_volume:/app/media:ro # Show uploaded photos (Read Only)
+        - static_volume:/app/static:ro # Show static files like CSS/JS (Read Only)
+      depends_on:
+        - web # Start 'web' service before starting nginx
+
+    web: # Django service
+      build: . # Build the image using the Dockerfile
+      container_name: django_app # Name of the container
+      command: gunicorn cyber_portfolio.wsgi:application --bind 0.0.0.0:8000 # Run Django
+      volumes:
+        - .:/app # Link my code to /app inside docker
+        - /var/run/docker.sock:/var/run/docker.sock # Let Django control Docker
+        - media_volume:/app/media # Save uploaded photos here permanently
+        - static_volume:/app/static # Save static files here permanently
+      ports:
+        - "8000:8000" # Map computer port 8000 to container port 8000
+      depends_on:
+        - db # Start 'db' service before starting web
+
+    db: # Database service
+      image: postgres # Use Postgres database image
+      container_name: postgres_db # Name of the container
+      environment:
+         POSTGRES_DB: my_db # Name of my database
+         POSTGRES_USER: ali # Database username
+         POSTGRES_PASSWORD: root # Database password
+      volumes:
+         # FIXED: Correct path for Postgres storage
+         - postgres_data:/var/lib/postgresql/data 
+
+    prometheus: # Monitoring service
+        image: prom/prometheus:latest # Use Prometheus image
+        volumes:
+         - ./prometheus.yml:/etc/prometheus/prometheus.yml # My monitoring config
+        ports:
+         - '9090:9090' # Map computer port 9090 to container port 9090
+
+    grafna: # Visualization service
+        image: grafana/grafana # Use Grafana image
+        ports:
+         - '3000:3000' # Map computer port 3000 to container port 3000
+
+volumes: # Permanent storage places
+    postgres_data: # For database files
+    media_volume:  # For uploaded photos
+    static_volume: # For CSS/JS files

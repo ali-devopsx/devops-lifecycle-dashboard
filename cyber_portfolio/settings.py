@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'identity',  # Our custom identity portfolio app
-    'dashboard',
+    'dashboard', # Monitroing CPU, RAM, Containers, Portainer
+    'django_prometheus',
 ]
 
 # ===== MIDDLEWARE =====
