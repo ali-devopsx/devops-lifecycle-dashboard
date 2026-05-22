@@ -1,3 +1,9 @@
+minikube-linux-amd64
+*.iso
+*.zip
+*.tar
+
+
 # Django
 *.pyc
 __pycache__/
