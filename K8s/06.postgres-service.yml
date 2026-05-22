@@ -1,0 +1,18 @@
+apiVersion: v1                # API version for Service
+kind: Service                # Resource type is Service
+
+metadata:
+  name: postgres-service     # Name of the Service (used by apps to connect)
+  namespace: django-prod     # Namespace where Service exists
+
+spec:
+  type: ClusterIP            # Internal Service (inside cluster only)
+
+  selector:
+    app: postgres            # Select Pods with label app=postgres
+
+  ports:
+    - protocol: TCP          # Protocol used by PostgreSQL
+      port: 5432             # Port exposed by the Service
+      targetPort: 5432       # Port inside PostgreSQL container
+

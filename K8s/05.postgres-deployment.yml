@@ -1,0 +1,56 @@
+apiVersion: apps/v1                         # API version for Deployments
+kind: Deployment                            # Type of resource to create
+
+metadata:                                   # Metadata about this Deployment
+  name: postgres-deployment                 # Name of the Deployment
+  namespace: django-prod                    # Target isolated environment
+  labels:                                   # Label for the Deployment itself
+    app: postgres                           # Label key and value
+
+spec:                                       # Deployment specifications
+  replicas: 1                               # Run exactly 1 pod instance
+
+  selector:                                 # How to find the correct pods
+    matchLabels:                            # Match pods with this exact label
+      app: postgres                         # Target pod label to manage
+
+  template:                                 # Template for creating new pods
+    metadata:                               # Metadata for the pod
+      labels:                               # Labels to put on the pod
+        app: postgres                       # Pod label (matches selector above)
+
+    spec:                                   # Technical specifications for the pod
+      containers:                           # List of containers inside the pod
+      - name: postgres                      # Internal name of the container
+        image: postgres:15-alpine           # PostgreSQL official image name and version
+
+        ports:                              # Network ports settings
+        - containerPort: 5432               # Default internal PostgreSQL port
+
+        env:                                # Environment variables list
+        - name: DB_NAME                 # Variable 1: Database name
+          valueFrom:                        # Get value from external source
+            configMapKeyRef:                # Read from a ConfigMap
+              name: django-config           # Name of ConfigMap (File 01)
+              key: DB_NAME                  # Target key inside ConfigMap
+
+        - name: DB_USER               # Variable 2: Database user
+          valueFrom:                        # Get value from external source
+            configMapKeyRef:                # Read from a ConfigMap
+              name: django-config           # Name of ConfigMap (File 01)
+              key: DB_USER                  # Target key inside ConfigMap
+
+        - name: DB_PASSWORD           # Variable 3: Secret password
+          valueFrom:                        # Get value from external source
+            secretKeyRef:                   # Read from a Secret file
+              name: django-secret           # Name of Secret (File 02)
+              key: DB_PASSWORD              # Target key inside Secret
+
+        volumeMounts:                       # Attach storage to container path
+        - name: postgres-storage            # Name of volume link to use
+          mountPath: /var/lib/postgresql/data # Directory path inside container
+
+      volumes:                              # Define physical storage volumes
+      - name: postgres-storage              # Name of volume defined for this file
+        persistentVolumeClaim:              # Link volume to an active PVC
+          claimName: postgres-pvc          # Name of real PVC file (File 03)

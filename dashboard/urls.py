@@ -1,8 +1,11 @@
 from django.urls import path
-from .views import dashboard_view, restart_container, start_container, stop_container, container_logs
-
+from .views import dashboard_api,dashboard_view, restart_container, start_container, stop_container, container_logs
+from . import views
 urlpatterns = [
     path('', dashboard_view, name='dashboard'),
+   
+    path("api/", views.dashboard_api),
+    #path("dashboard/api/", dashboard_api, name='dash_api'),
 
     # restart container
     path('restart/<str:name>/', restart_container, name='restart'),

@@ -1,0 +1,17 @@
+apiVersion: v1              # API version for Service resource
+kind: Service              # This resource is a Service
+
+metadata:
+  name: django-service     # Name of the Service (used to access it)
+  namespace: django-prod   # Namespace where the Service is created
+
+spec:
+  type: ClusterIP          # Internal service (only inside the cluster)
+
+  selector:
+    app: django            # Select Pods with label app=django
+
+  ports:
+    - protocol: TCP        # Communication protocol
+      port: 80             # Port exposed by the Service
+      targetPort: 8000     # Port inside the Django container

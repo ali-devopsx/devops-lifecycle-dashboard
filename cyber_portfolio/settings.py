@@ -20,7 +20,7 @@ SECRET_KEY = 'django-insecure-your-secret-key-change-this-in-production-12345!@#
 DEBUG = True
 
 # In production, add your domain here (e.g., 'example.com', 'www.example.com')
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '172.17.15.19']
+ALLOWED_HOSTS = ['*','localhost', '127.0.0.1', '172.17.15.19']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # ===== INSTALLED APPS =====
 # Add 'identity' app to handle the portfolio
@@ -81,13 +81,26 @@ WSGI_APPLICATION = 'cyber_portfolio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'my_db',
-        'USER': 'ali',
-        'PASSWORD': 'root',
-        'HOST': 'db',
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB', 'my_db'),
+        'USER':  os.getenv('POSTGRES_USER','ali'),
+        'PASSWORD':  os.getenv('POSTGRES_PASSWORD','root'),
+        'HOST':  os.getenv('DB_HOST','localhost'),
+        'PORT':  os.getenv('POSTGRES_PORT','5432'),
     }
 }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'my_db'),
+        'USER': os.getenv('POSTGRES_USER', 'ali'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'root'),
+        'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+    }
+}
+
 
 # ===== PASSWORD VALIDATION =====
 # Password validators for user authentication (not used in this portfolio, but good practice)

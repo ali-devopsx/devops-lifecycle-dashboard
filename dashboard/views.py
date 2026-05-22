@@ -11,6 +11,19 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 
+
+from django.http import JsonResponse
+
+def dashboard_api(request):
+    return JsonResponse({
+        "cpu": 25,
+        "ram": 70,
+        "containers": [
+            {"name": "web", "status": "running"},
+            {"name": "db", "status": "stopped"},
+        ]
+    })
+
 # this function runs when user open /dashboard/
 def dashboard_view(request):
 

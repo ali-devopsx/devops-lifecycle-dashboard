@@ -3,7 +3,7 @@ URL Configuration for cyber_portfolio Django Project
 This module defines the root URL routing, including admin site and app URLs.
 Also configures static and media file serving for development.
 """
-
+from dashboard import views
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -14,11 +14,11 @@ urlpatterns = [
     # Django admin site - access at /admin/
     # Log in with your superuser credentials
     path('admin/', admin.site.urls),
-
+    path('dashboard/api/', views.dashboard_api),
     # Include all identity app URLs
     # The identity app URL patterns are included here
     path('', include('identity.urls', namespace='identity')),
-    
+    #path("dashboard/", include("dashboard.urls")),    
     path('dashboard/', include('dashboard.urls')),
     path('', include('django_prometheus.urls')),
 ]
