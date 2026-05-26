@@ -27,24 +27,27 @@ spec:                                       # Deployment specifications
         ports:                              # Network ports settings
         - containerPort: 5432               # Default internal PostgreSQL port
 
-        env:                                # Environment variables list
-        - name: DB_NAME                 # Variable 1: Database name
-          valueFrom:                        # Get value from external source
-            configMapKeyRef:                # Read from a ConfigMap
-              name: django-config           # Name of ConfigMap (File 01)
-              key: DB_NAME                  # Target key inside ConfigMap
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: django-config
+              key: POSTGRES_DB
 
-        - name: DB_USER               # Variable 2: Database user
-          valueFrom:                        # Get value from external source
-            configMapKeyRef:                # Read from a ConfigMap
-              name: django-config           # Name of ConfigMap (File 01)
-              key: DB_USER                  # Target key inside ConfigMap
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: django-config
+              key: POSTGRES_USER
 
-        - name: DB_PASSWORD           # Variable 3: Secret password
-          valueFrom:                        # Get value from external source
-            secretKeyRef:                   # Read from a Secret file
-              name: django-secret           # Name of Secret (File 02)
-              key: DB_PASSWORD              # Target key inside Secret
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: DB_PASSWORD
+
+        - name: POSTGRES_HOST_AUTH_METHOD
+          value: "md5"
 
         volumeMounts:                       # Attach storage to container path
         - name: postgres-storage            # Name of volume link to use

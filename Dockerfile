@@ -21,7 +21,7 @@ WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODEL=core.settings
+    DJANGO_SETTINGS_MODULE=cyber_portfolio.settings
 
 
 # Secur
@@ -41,7 +41,7 @@ COPY --from=builder /app .
 
 
 RUN pip install --no-cache /wheels/* && \
-    rm -rf /wheel
+    rm -rf /wheels
 
 COPY --chown=django:django . .
 

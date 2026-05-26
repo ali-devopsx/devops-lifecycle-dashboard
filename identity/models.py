@@ -261,6 +261,9 @@ class TimelineEvent(models.Model):
         ordering = ['order', 'year']
         verbose_name = "Timeline Event"
         verbose_name_plural = "Timeline Events"
+        constraints = [
+            models.UniqueConstraint(fields=['year', 'title'], name='unique_timeline_event')
+        ]
 
     def __str__(self):
         return f"{self.year} - {self.title}"

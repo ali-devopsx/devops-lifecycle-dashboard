@@ -6,10 +6,10 @@ metadata:
   namespace: django-prod   # Namespace where the Service is created
 
 spec:
-  type: ClusterIP          # Internal service (only inside the cluster)
+  type: NodePort
 
   selector:
-    app: django            # Select Pods with label app=django
+    app: django-deployment
 
   ports:
     - protocol: TCP        # Communication protocol
