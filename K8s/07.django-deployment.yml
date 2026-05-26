@@ -34,13 +34,16 @@ spec:
     spec:
       containers:
       - image: alidevopsx/django_app
+        imagePullPolicy: Never
+
         name: django-app
+
         ports:
         - containerPort: 8000
 
         env:
-          - name: DB_HOST
-            value: postgres-service
+          - name: POSTGRES_HOST
+            value: db
 
           - name: DB_NAME
             valueFrom:

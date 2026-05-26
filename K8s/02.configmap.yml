@@ -13,7 +13,7 @@ data:
 
   DB_NAME: "django_k8s_db"    # Name of the PostgreSQL database
   DB_USER: "ali"              # Database username
-  DB_HOST: "postgres-service" # Hostname (Kubernetes Service name for Postgres)
+  POSTGRES_HOST: "db" # Hostname (Kubernetes Service name for Postgres)
   DB_PORT: "5432"             # Port PostgreSQL is running on
 
   DEBUG: "False"              # Django debug mode (False for production)
