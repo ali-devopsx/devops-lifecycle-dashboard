@@ -82,25 +82,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'my_db'),
-        'USER':  os.getenv('POSTGRES_USER','ali'),
-        'PASSWORD':  os.getenv('POSTGRES_PASSWORD','root'),
-        'HOST':  os.getenv('DB_HOST','localhost'),
-        'PORT':  os.getenv('POSTGRES_PORT','5432'),
-    }
-}
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'my_db'),
         'USER': os.getenv('POSTGRES_USER', 'ali'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'root'),
-        'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
-
 
 # ===== PASSWORD VALIDATION =====
 # Password validators for user authentication (not used in this portfolio, but good practice)
